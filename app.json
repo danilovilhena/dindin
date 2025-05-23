@@ -5,7 +5,8 @@
         "backgroundColor": "##121212",
         "foregroundImage": "./assets/images/icon.png"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.dindin.app"
     },
     "experiments": {
       "typedRoutes": true
@@ -27,6 +28,22 @@
           "imageWidth": 200,
           "resizeMode": "contain"
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/DMSans-Thin.ttf",
+            "./assets/fonts/DMSans-ExtraLight.ttf",
+            "./assets/fonts/DMSans-Light.ttf",
+            "./assets/fonts/DMSans-Regular.ttf",
+            "./assets/fonts/DMSans-Medium.ttf",
+            "./assets/fonts/DMSans-SemiBold.ttf",
+            "./assets/fonts/DMSans-Bold.ttf",
+            "./assets/fonts/DMSans-ExtraBold.ttf",
+            "./assets/fonts/DMSans-Black.ttf"
+          ]
+        }
       ]
     ],
     "scheme": "dindin",
@@ -37,6 +54,12 @@
       "bundler": "metro",
       "favicon": "./assets/images/icon.png",
       "output": "static"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "dca9c5aa-468a-4781-989f-633d44f47e12"
+      }
     }
   }
 }
