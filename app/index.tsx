@@ -11,104 +11,71 @@ export default function Index() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={require("../assets/images/icon.png")}
-            style={styles.image}
-          />
-        </View>
+    <View style={styles.container}>
+      <SafeAreaView style={styles.safeArea}>
+        <Image
+          source={require("../assets/images/icon.png")}
+          style={styles.logoImage}
+        />
 
-        <Text style={styles.headerText}>
-          Domine seus gastos sem complicação
-        </Text>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Pressable style={styles.primaryButton} onPress={handleStart}>
-          <Text style={styles.primaryButtonText}>Começar agora</Text>
-        </Pressable>
-
-        {/* <Pressable style={styles.secondaryButton}>
-          <Text style={styles.secondaryButtonText}>
-            Já possui conta?{" "}
-            <Text style={styles.secondaryButtonTextLink}>Entrar agora</Text>
+        <View style={styles.bottomSection}>
+          <Text style={styles.headerText}>
+            Uma forma fácil de gerenciar suas finanças
           </Text>
-        </Pressable> */}
-      </View>
-    </SafeAreaView>
+          <Pressable style={styles.primaryButton} onPress={handleStart}>
+            <Text style={styles.primaryButtonText}>Começar agora</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.backgroundColor,
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: 60,
+    backgroundColor: colors.textColor,
   },
-  contentContainer: {
+  safeArea: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    gap: 24,
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 20,
   },
-  imageContainer: {
-    backgroundColor: "#FFF",
-    borderRadius: 20,
-    shadowColor: "#E8A230",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  image: {
-    width: 200,
-    height: 200,
+  logoImage: {
+    width: 96,
+    height: 96,
     borderRadius: 16,
+    borderColor: colors.white,
+    resizeMode: "contain",
+  },
+  bottomSection: {
+    alignItems: "center",
+    gap: 48,
+    width: "100%",
   },
   headerText: {
     fontFamily: "DMSans",
     fontWeight: "900",
-    fontSize: 32,
+    fontSize: 36,
     textAlign: "center",
-    color: colors.textColor,
-    paddingHorizontal: 20,
-    lineHeight: 38,
-  },
-  buttonContainer: {
-    width: "100%",
-    alignItems: "center",
-    gap: 8,
-    paddingHorizontal: 20,
+    color: colors.white,
+    lineHeight: 40,
   },
   primaryButton: {
-    backgroundColor: colors.textColor,
-    paddingVertical: 16,
+    backgroundColor: colors.yellow,
+    paddingVertical: 18,
     paddingHorizontal: 32,
     borderRadius: 30,
     width: "100%",
     alignItems: "center",
   },
   primaryButtonText: {
-    color: "#FFFFFF",
+    color: colors.textColor,
     fontSize: 16,
-    fontFamily: "DMSans_700Bold",
-  },
-  secondaryButton: {
-    padding: 8,
-  },
-  secondaryButtonText: {
-    color: "#121212",
-    fontSize: 14,
-    fontFamily: "DMSans_400Regular",
-  },
-  secondaryButtonTextLink: {
-    fontFamily: "DMSans_700Bold",
+    fontFamily: "DMSans",
+    fontWeight: "800",
   },
 });

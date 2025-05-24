@@ -6,13 +6,23 @@
         "foregroundImage": "./assets/images/icon.png"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.dindin.app"
+      "package": "com.vilhena.dindin"
     },
     "experiments": {
       "typedRoutes": true
     },
+    "extra": {
+      "eas": {
+        "projectId": "dca9c5aa-468a-4781-989f-633d44f47e12"
+      },
+      "router": {}
+    },
     "icon": "./assets/images/icon.png",
     "ios": {
+      "bundleIdentifier": "com.vilhena.dindin",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
       "supportsTablet": true
     },
     "name": "Dindin",
@@ -23,7 +33,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#121212",
+          "backgroundColor": "#000",
           "image": "./assets/images/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain"
@@ -54,12 +64,6 @@
       "bundler": "metro",
       "favicon": "./assets/images/icon.png",
       "output": "static"
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "dca9c5aa-468a-4781-989f-633d44f47e12"
-      }
     }
   }
 }
