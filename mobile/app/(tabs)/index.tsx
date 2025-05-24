@@ -1,7 +1,7 @@
 import { ExpenseCard } from "@/components/ExpenseCard";
 import { colors } from "@/constants/Colors";
 import { formatCurrency } from "@/utils/currencyUtils";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import React, { useCallback } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -182,7 +182,7 @@ export default function HomeScreen() {
       </View>
 
       <Pressable style={styles.fab}>
-        <Ionicons name="add" size={32} color="#FFFFFF" />
+        <Feather name="plus" size={28} color={colors.dark.primary} />
       </Pressable>
     </SafeAreaView>
   );
@@ -307,10 +307,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
-    width: 60,
-    height: 60,
+    width: 52,
+    height: 52,
     borderRadius: 30,
     backgroundColor: colors.yellow,
+    color: colors.dark.primary,
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",

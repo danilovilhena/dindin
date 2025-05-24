@@ -17,7 +17,6 @@ interface ExpenseCardProps {
   transaction: Transaction;
 }
 
-// Move styles outside of component for better performance
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
@@ -85,14 +84,9 @@ const styles = StyleSheet.create({
 
 export const ExpenseCard: React.FC<ExpenseCardProps> = React.memo(
   ({ transaction }) => {
-    const categoryInfo: CategoryInfo = categoryMap[transaction.category] || {
-      slug: "other",
-      label: "Outros",
-      emoji: "💼",
-      gradientColors: [colors.dark.surface, colors.dark.tertiary],
-    };
+    const categoryInfo: CategoryInfo =
+      categoryMap[transaction.category] || categoryMap.others;
 
-    // Create dynamic styles only when needed
     const iconImageStyle = {
       width: categoryInfo.iconSize,
       height: categoryInfo.iconSize,
