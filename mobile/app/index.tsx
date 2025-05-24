@@ -1,4 +1,4 @@
-import { colors } from "@/mobile/constants/Colors";
+import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";

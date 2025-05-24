@@ -1,4 +1,4 @@
-import { colors } from "@/mobile/constants/Colors";
+import { colors } from "@/constants/Colors";
 import Feather from "@react-native-vector-icons/feather";
 import { Tabs } from "expo-router";
 import { Pressable, StyleSheet } from "react-native";

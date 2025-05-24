@@ -1,7 +1,8 @@
-import { ExpenseCard } from "@/mobile/components/ExpenseCard";
-import { colors } from "@/mobile/constants/Colors";
+import { ExpenseCard } from "@/components/ExpenseCard";
+import { colors } from "@/constants/Colors";
 import { formatCurrency } from "@/utils/currencyUtils";
 import { Ionicons } from "@expo/vector-icons";
+import React, { useCallback } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -105,9 +106,22 @@ export default function HomeScreen() {
     return `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
   };
 
-  const renderTransaction = ({ item }: { item: Transaction }) => (
-    <ExpenseCard transaction={item} />
+  const renderTransaction = useCallback(
+    ({ item }: { item: Transaction }) => <ExpenseCard transaction={item} />,
+    []
   );
+
+  const keyExtractor = useCallback((item: Transaction) => item.id, []);
+
+  // Performance optimization: Calculate item layout if ExpenseCard has consistent height
+  const getItemLayout = (
+    data: ArrayLike<Transaction> | null | undefined,
+    index: number
+  ) => ({
+    length: 80, // 16px top padding + 16px bottom padding + 12px marginBottom + ~36px content height
+    offset: 80 * index,
+    index,
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -150,8 +164,19 @@ export default function HomeScreen() {
           <FlatList
             data={mockTransactions}
             renderItem={renderTransaction}
-            keyExtractor={(item) => item.id}
+            keyExtractor={keyExtractor}
             showsVerticalScrollIndicator={false}
+            // Performance optimizations
+            getItemLayout={getItemLayout}
+            windowSize={10}
+            maxToRenderPerBatch={10}
+            updateCellsBatchingPeriod={50}
+            initialNumToRender={15}
+            removeClippedSubviews={true}
+            // Enable faster scrolling
+            scrollEventThrottle={16}
+            // Optimize for large lists
+            legacyImplementation={false}
           />
         </View>
       </View>
