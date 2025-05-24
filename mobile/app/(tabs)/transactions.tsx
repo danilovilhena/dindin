@@ -1,4 +1,4 @@
-import { colors } from "@/constants/Colors";
+import { colors } from "@/mobile/constants/Colors";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 

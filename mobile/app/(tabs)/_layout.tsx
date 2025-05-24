@@ -1,4 +1,4 @@
-import { colors } from "@/constants/Colors";
+import { colors } from "@/mobile/constants/Colors";
 import Feather from "@react-native-vector-icons/feather";
 import { Tabs } from "expo-router";
 import { Pressable, StyleSheet } from "react-native";
@@ -16,6 +16,7 @@ export default function TabLayout() {
         tabBarStyle: {
           ...styles.tabBar,
           paddingBottom: inset,
+          display: "none",
         },
         tabBarActiveTintColor: colors.textColor,
         tabBarInactiveTintColor: "#999999",

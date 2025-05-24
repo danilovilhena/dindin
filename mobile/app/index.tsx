@@ -1,4 +1,4 @@
-import { colors } from "@/constants/Colors";
+import { colors } from "@/mobile/constants/Colors";
 import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -34,7 +34,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.textColor,
+    backgroundColor: colors.dark.primary,
   },
   safeArea: {
     flex: 1,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   primaryButtonText: {
-    color: colors.textColor,
+    color: colors.dark.primary,
     fontSize: 16,
     fontFamily: "DMSans",
     fontWeight: "800",

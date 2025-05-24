@@ -1,12 +1,12 @@
-import { colors } from "@/constants/Colors";
+import { colors } from "@/mobile/constants/Colors";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function GoalsScreen() {
+export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Metas</Text>
+        <Text style={styles.title}>Perfil</Text>
       </View>
     </SafeAreaView>
   );
