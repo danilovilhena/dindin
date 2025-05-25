@@ -1,14 +1,24 @@
 import { colors } from "@/constants/Colors";
-import { useRouter } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
+import { Redirect, useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const router = useRouter();
+  const { isSignedIn } = useAuth();
 
   const handleStart = () => {
-    router.push("/dashboard");
+    router.push("/(auth)/sign-up");
   };
+
+  const handleLogin = () => {
+    router.push("/(auth)/sign-in");
+  };
+
+  if (isSignedIn) {
+    return <Redirect href="/(dashboard)" />;
+  }
 
   return (
     <View style={styles.container}>
@@ -22,9 +32,17 @@ export default function Index() {
           <Text style={styles.headerText}>
             Uma forma fácil de gerenciar suas finanças
           </Text>
-          <Pressable style={styles.primaryButton} onPress={handleStart}>
-            <Text style={styles.primaryButtonText}>Começar agora</Text>
-          </Pressable>
+          <View style={styles.buttonsContainer}>
+            <Pressable style={styles.primaryButton} onPress={handleStart}>
+              <Text style={styles.primaryButtonText}>Começar agora</Text>
+            </Pressable>
+            <Pressable style={styles.textButton} onPress={handleLogin}>
+              <Text style={styles.textButtonText}>
+                Já possui uma conta?{" "}
+                <Text style={styles.textButtonTextBold}>Entrar</Text>
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </SafeAreaView>
     </View>
@@ -64,6 +82,10 @@ const styles = StyleSheet.create({
     color: colors.white,
     lineHeight: 40,
   },
+  buttonsContainer: {
+    gap: 16,
+    width: "100%",
+  },
   primaryButton: {
     backgroundColor: colors.yellow,
     paddingVertical: 18,
@@ -77,5 +99,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "DMSans",
     fontWeight: "800",
+  },
+  textButton: {
+    alignItems: "center",
+  },
+  textButtonText: {
+    color: colors.white,
+    fontSize: 14,
+    fontFamily: "DMSans",
+    fontWeight: "400",
+  },
+  textButtonTextBold: {
+    fontWeight: "700",
   },
 });

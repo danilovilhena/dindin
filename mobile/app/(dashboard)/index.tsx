@@ -1,9 +1,18 @@
 import { ExpenseCard } from "@/components/ExpenseCard";
 import { colors } from "@/constants/Colors";
 import { formatCurrency } from "@/utils/currencyUtils";
+import { useAuth } from "@clerk/clerk-expo";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Transaction {
@@ -82,10 +91,21 @@ const mockTransactions: Transaction[] = [
 ];
 
 export default function HomeScreen() {
+  const router = useRouter();
+  const { signOut } = useAuth();
   const currentBalance = mockTransactions.reduce(
     (acc, curr) => acc + curr.amount,
     0
   );
+
+  const handleSignOut = async () => {
+    try {
+      await signOut({ redirectUrl: "/" });
+      router.replace("../");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getCurrentMonth = () => {
     const monthNames = [
@@ -134,6 +154,9 @@ export default function HomeScreen() {
             </View>
             <Text style={styles.userName}>Danilo Vilhena</Text>
           </View>
+          <TouchableOpacity onPress={handleSignOut}>
+            <Feather name="log-out" size={18} color={"#fff"} />
+          </TouchableOpacity>
         </View>
 
         {/* Balance Card */}
@@ -200,7 +223,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     marginBottom: 24,
   },
   userInfo: {
