@@ -8,7 +8,7 @@ const SessionStateHandler = () => {
   useEffect(() => {
     if (session && !hasTouched.current) {
       hasTouched.current = true;
-      session.touch();
+      session?.touch?.();
     }
   }, [session]);
 
