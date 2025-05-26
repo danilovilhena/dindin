@@ -6,6 +6,9 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from "react-native";
 import { useSignUp, isClerkAPIResponseError } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
@@ -67,10 +70,10 @@ export default function SignUpScreen() {
     // Start sign-up process using email and password provided
     try {
       await signUp.create({
-        firstName,
-        lastName,
-        emailAddress,
-        password,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        emailAddress: emailAddress.trim(),
+        password: password.trim(),
       });
 
       // Send user an email with verification code
@@ -257,93 +260,120 @@ export default function SignUpScreen() {
     return (
       <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
-          {/* Header with chevron and title */}
-          <View style={styles.header}>
-            <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-              <Ionicons name="chevron-back" size={24} color={colors.white} />
-            </TouchableOpacity>
-            <Text style={styles.headerText}>Verificar email</Text>
-          </View>
-
-          <Text style={styles.subHeaderText}>
-            Digite o código de verificação que foi enviado para seu email
-          </Text>
-
-          {/* OTP Container */}
-          <View style={styles.formContainer}>
-            <View style={styles.otpContainer}>
-              {code.map((digit, index) => (
-                <TextInput
-                  key={index}
-                  ref={(ref) => {
-                    otpRefs.current[index] = ref;
-                  }}
-                  style={styles.otpInput}
-                  value={digit}
-                  onChangeText={(value) => handleOtpChange(value, index)}
-                  onKeyPress={({ nativeEvent }) =>
-                    handleOtpKeyPress(nativeEvent.key, index)
-                  }
-                  keyboardType="number-pad"
-                  textAlign="center"
-                  selectTextOnFocus
-                  editable={!isLoading}
-                />
-              ))}
-            </View>
-
-            {/* Error Display */}
-            {error && (
-              <View style={styles.errorContainer}>
-                <Feather name="alert-circle" size={16} color="#ef4444" />
-                <Text style={styles.errorText}>{error}</Text>
+          <KeyboardAvoidingView
+            style={styles.keyboardAvoidingView}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+          >
+            <ScrollView
+              style={styles.scrollView}
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+            >
+              {/* Header with chevron and title */}
+              <View style={styles.header}>
+                <TouchableOpacity
+                  onPress={handleGoBack}
+                  style={styles.backButton}
+                >
+                  <Ionicons
+                    name="chevron-back"
+                    size={24}
+                    color={colors.white}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.headerText}>Verificar email</Text>
               </View>
-            )}
-          </View>
 
-          {/* Bottom Section with Button */}
-          <View style={styles.bottomSection}>
-            <TouchableOpacity
-              style={[
-                styles.primaryButton,
-                isLoading && styles.primaryButtonDisabled,
-              ]}
-              onPress={() => onVerifyPress()}
-              disabled={isLoading || code.join("").length !== 6}
-            >
-              {isLoading ? (
-                <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="small" color={colors.dark.primary} />
-                  <Text style={styles.primaryButtonText}>Verificando...</Text>
-                </View>
-              ) : (
-                <Text style={styles.primaryButtonText}>Verificar</Text>
-              )}
-            </TouchableOpacity>
+              <Text style={styles.subHeaderText}>
+                Digite o código de verificação que foi enviado para seu email
+              </Text>
 
-            <TouchableOpacity
-              style={[
-                styles.secondaryButton,
-                (isResending || resendTimeout > 0) &&
-                  styles.secondaryButtonDisabled,
-              ]}
-              onPress={onResendPress}
-              disabled={isResending || resendTimeout > 0}
-            >
-              {isResending ? (
-                <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="small" color={colors.white} />
-                  <Text style={styles.secondaryButtonText}>Reenviando...</Text>
+              {/* OTP Container */}
+              <View style={styles.formContainer}>
+                <View style={styles.otpContainer}>
+                  {code.map((digit, index) => (
+                    <TextInput
+                      key={index}
+                      ref={(ref) => {
+                        otpRefs.current[index] = ref;
+                      }}
+                      style={styles.otpInput}
+                      value={digit}
+                      onChangeText={(value) => handleOtpChange(value, index)}
+                      onKeyPress={({ nativeEvent }) =>
+                        handleOtpKeyPress(nativeEvent.key, index)
+                      }
+                      keyboardType="number-pad"
+                      textAlign="center"
+                      selectTextOnFocus
+                      editable={!isLoading}
+                    />
+                  ))}
                 </View>
-              ) : resendTimeout > 0 ? (
-                <Text style={styles.secondaryButtonText}>
-                  Reenviar código em {resendTimeout}s
-                </Text>
-              ) : (
-                <Text style={styles.secondaryButtonText}>Reenviar código</Text>
-              )}
-            </TouchableOpacity>
-          </View>
+
+                {/* Error Display */}
+                {error && (
+                  <View style={styles.errorContainer}>
+                    <Feather name="alert-circle" size={16} color="#ef4444" />
+                    <Text style={styles.errorText}>{error}</Text>
+                  </View>
+                )}
+              </View>
+            </ScrollView>
+
+            {/* Bottom Section with Button */}
+            <View style={styles.bottomSection}>
+              <TouchableOpacity
+                style={[
+                  styles.primaryButton,
+                  isLoading && styles.primaryButtonDisabled,
+                ]}
+                onPress={() => onVerifyPress()}
+                disabled={isLoading || code.join("").length !== 6}
+              >
+                {isLoading ? (
+                  <View style={styles.loadingContainer}>
+                    <ActivityIndicator
+                      size="small"
+                      color={colors.dark.primary}
+                    />
+                    <Text style={styles.primaryButtonText}>Verificando...</Text>
+                  </View>
+                ) : (
+                  <Text style={styles.primaryButtonText}>Verificar</Text>
+                )}
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.secondaryButton,
+                  (isResending || resendTimeout > 0) &&
+                    styles.secondaryButtonDisabled,
+                ]}
+                onPress={onResendPress}
+                disabled={isResending || resendTimeout > 0}
+              >
+                {isResending ? (
+                  <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="small" color={colors.white} />
+                    <Text style={styles.secondaryButtonText}>
+                      Reenviando...
+                    </Text>
+                  </View>
+                ) : resendTimeout > 0 ? (
+                  <Text style={styles.secondaryButtonText}>
+                    Reenviar código em {resendTimeout}s
+                  </Text>
+                ) : (
+                  <Text style={styles.secondaryButtonText}>
+                    Reenviar código
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
         </SafeAreaView>
       </View>
     );
@@ -352,136 +382,152 @@ export default function SignUpScreen() {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        {/* Header with chevron and title */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-            <Ionicons name="chevron-back" size={24} color={colors.white} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Criar conta</Text>
-        </View>
-
-        {/* Form Container */}
-        <View style={styles.formContainer}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Nome</Text>
-            <TextInput
-              style={styles.input}
-              autoCapitalize="words"
-              autoComplete="given-name"
-              value={firstName}
-              placeholder="Digite seu nome"
-              placeholderTextColor={colors.dark.textSecondary}
-              onChangeText={(firstName) => setFirstName(firstName)}
-              returnKeyType="next"
-              onSubmitEditing={() => lastNameRef.current?.focus()}
-              blurOnSubmit={false}
-              editable={!isLoading}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Sobrenome</Text>
-            <TextInput
-              ref={lastNameRef}
-              style={styles.input}
-              autoCapitalize="words"
-              autoComplete="family-name"
-              value={lastName}
-              placeholder="Digite seu sobrenome"
-              placeholderTextColor={colors.dark.textSecondary}
-              onChangeText={(lastName) => setLastName(lastName)}
-              returnKeyType="next"
-              onSubmitEditing={() => emailRef.current?.focus()}
-              blurOnSubmit={false}
-              editable={!isLoading}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Email</Text>
-            <TextInput
-              ref={emailRef}
-              style={styles.input}
-              autoCapitalize="none"
-              autoComplete="email"
-              value={emailAddress}
-              placeholder="Digite seu email"
-              placeholderTextColor={colors.dark.textSecondary}
-              onChangeText={(email) => setEmailAddress(email)}
-              keyboardType="email-address"
-              returnKeyType="next"
-              onSubmitEditing={() => passwordRef.current?.focus()}
-              blurOnSubmit={false}
-              editable={!isLoading}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Senha</Text>
-            <View style={styles.passwordContainer}>
-              <TextInput
-                ref={passwordRef}
-                style={styles.passwordInput}
-                value={password}
-                placeholder="Digite sua senha"
-                placeholderTextColor={colors.dark.textSecondary}
-                secureTextEntry={!showPassword}
-                onChangeText={(password) => setPassword(password)}
-                returnKeyType="done"
-                onSubmitEditing={onSignUpPress}
-                blurOnSubmit={false}
-                editable={!isLoading}
-              />
-              <TouchableOpacity
-                style={styles.eyeButton}
-                onPress={togglePasswordVisibility}
-                disabled={isLoading}
-              >
-                <Feather
-                  name={showPassword ? "eye-off" : "eye"}
-                  size={20}
-                  color={colors.dark.textSecondary}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Error Display */}
-          {error && (
-            <View style={styles.errorContainer}>
-              <Feather name="alert-circle" size={16} color="#ef4444" />
-              <Text style={styles.errorText}>{error}</Text>
-            </View>
-          )}
-        </View>
-
-        {/* Bottom Section with Button and Link */}
-        <View style={styles.bottomSection}>
-          <TouchableOpacity
-            style={[
-              styles.primaryButton,
-              isLoading && styles.primaryButtonDisabled,
-            ]}
-            onPress={onSignUpPress}
-            disabled={isLoading}
+        <KeyboardAvoidingView
+          style={styles.keyboardAvoidingView}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+        >
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
           >
-            {isLoading ? (
-              <View style={styles.loadingContainer}>
-                <ActivityIndicator size="small" color={colors.dark.primary} />
-                <Text style={styles.primaryButtonText}>Criando conta...</Text>
-              </View>
-            ) : (
-              <Text style={styles.primaryButtonText}>Continuar</Text>
-            )}
-          </TouchableOpacity>
+            {/* Header with chevron and title */}
+            <View style={styles.header}>
+              <TouchableOpacity
+                onPress={handleGoBack}
+                style={styles.backButton}
+              >
+                <Ionicons name="chevron-back" size={24} color={colors.white} />
+              </TouchableOpacity>
+              <Text style={styles.headerText}>Criar conta</Text>
+            </View>
 
-          <Link href="/sign-in" style={styles.link}>
-            <Text style={styles.linkText}>
-              Já possui uma conta?{" "}
-              <Text style={styles.linkTextBold}>Entrar</Text>
-            </Text>
-          </Link>
-        </View>
+            {/* Form Container */}
+            <View style={styles.formContainer}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Nome</Text>
+                <TextInput
+                  style={styles.input}
+                  autoCapitalize="words"
+                  autoComplete="given-name"
+                  value={firstName}
+                  placeholder="Digite seu nome"
+                  placeholderTextColor={colors.dark.textSecondary}
+                  onChangeText={(firstName) => setFirstName(firstName)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => lastNameRef.current?.focus()}
+                  blurOnSubmit={false}
+                  editable={!isLoading}
+                />
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Sobrenome</Text>
+                <TextInput
+                  ref={lastNameRef}
+                  style={styles.input}
+                  autoCapitalize="words"
+                  autoComplete="family-name"
+                  value={lastName}
+                  placeholder="Digite seu sobrenome"
+                  placeholderTextColor={colors.dark.textSecondary}
+                  onChangeText={(lastName) => setLastName(lastName)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => emailRef.current?.focus()}
+                  blurOnSubmit={false}
+                  editable={!isLoading}
+                />
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Email</Text>
+                <TextInput
+                  ref={emailRef}
+                  style={styles.input}
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  value={emailAddress}
+                  placeholder="Digite seu email"
+                  placeholderTextColor={colors.dark.textSecondary}
+                  onChangeText={(email) => setEmailAddress(email)}
+                  keyboardType="email-address"
+                  returnKeyType="next"
+                  onSubmitEditing={() => passwordRef.current?.focus()}
+                  blurOnSubmit={false}
+                  editable={!isLoading}
+                />
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Senha</Text>
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    ref={passwordRef}
+                    style={styles.passwordInput}
+                    value={password}
+                    placeholder="Digite sua senha"
+                    placeholderTextColor={colors.dark.textSecondary}
+                    secureTextEntry={!showPassword}
+                    onChangeText={(password) => setPassword(password)}
+                    returnKeyType="done"
+                    onSubmitEditing={onSignUpPress}
+                    blurOnSubmit={false}
+                    editable={!isLoading}
+                  />
+                  <TouchableOpacity
+                    style={styles.eyeButton}
+                    onPress={togglePasswordVisibility}
+                    disabled={isLoading}
+                  >
+                    <Feather
+                      name={showPassword ? "eye-off" : "eye"}
+                      size={20}
+                      color={colors.dark.textSecondary}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* Error Display */}
+              {error && (
+                <View style={styles.errorContainer}>
+                  <Feather name="alert-circle" size={16} color="#ef4444" />
+                  <Text style={styles.errorText}>{error}</Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+
+          {/* Bottom Section with Button and Link */}
+          <View style={styles.bottomSection}>
+            <TouchableOpacity
+              style={[
+                styles.primaryButton,
+                isLoading && styles.primaryButtonDisabled,
+              ]}
+              onPress={onSignUpPress}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size="small" color={colors.dark.primary} />
+                  <Text style={styles.primaryButtonText}>Criando conta...</Text>
+                </View>
+              ) : (
+                <Text style={styles.primaryButtonText}>Continuar</Text>
+              )}
+            </TouchableOpacity>
+
+            <Link href="/sign-in" style={styles.link}>
+              <Text style={styles.linkText}>
+                Já possui uma conta?{" "}
+                <Text style={styles.linkTextBold}>Entrar</Text>
+              </Text>
+            </Link>
+          </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </View>
   );
@@ -497,6 +543,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 20,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   header: {
     flexDirection: "row",
@@ -576,12 +631,15 @@ const styles = StyleSheet.create({
   otpContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 12,
+    gap: 8,
+    paddingHorizontal: 4,
   },
   otpInput: {
     backgroundColor: colors.dark.secondary,
     borderRadius: 16,
-    width: 48,
+    flex: 1,
+    minWidth: 40,
+    maxWidth: 48,
     height: 56,
     fontSize: 24,
     fontFamily: "DMSans",

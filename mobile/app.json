@@ -58,7 +58,8 @@
     ],
     "scheme": "dindin",
     "slug": "Dindin",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#121212",
     "version": "1.0.0",
     "web": {
       "bundler": "metro",

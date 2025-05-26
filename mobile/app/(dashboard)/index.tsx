@@ -1,10 +1,12 @@
 import { ExpenseCard } from "@/components/ExpenseCard";
+import SessionStateHandler from "@/components/session-state-handler";
 import { colors } from "@/constants/Colors";
 import { formatCurrency } from "@/utils/currencyUtils";
 import { useAuth } from "@clerk/clerk-expo";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   FlatList,
   Pressable,
@@ -92,11 +94,20 @@ const mockTransactions: Transaction[] = [
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { signOut } = useAuth();
+  const { signOut, isSignedIn, isLoaded } = useAuth();
   const currentBalance = mockTransactions.reduce(
     (acc, curr) => acc + curr.amount,
     0
   );
+
+  // Redirect to main page if not signed in
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      // Clear cached login state since user is not signed in
+      AsyncStorage.removeItem("isLoggedIn");
+      router.replace("../");
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   const handleSignOut = async () => {
     try {
@@ -207,6 +218,8 @@ export default function HomeScreen() {
       <Pressable style={styles.fab}>
         <Feather name="plus" size={28} color={colors.dark.primary} />
       </Pressable>
+
+      <SessionStateHandler />
     </SafeAreaView>
   );
 }
