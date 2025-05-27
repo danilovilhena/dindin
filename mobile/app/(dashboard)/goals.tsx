@@ -7,6 +7,7 @@ export default function GoalsScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Metas</Text>
+        <View className="w-10 h-10 bg-red-500 rounded-lg" />
       </View>
     </SafeAreaView>
   );

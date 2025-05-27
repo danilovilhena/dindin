@@ -1,8 +1,18 @@
+import Icon from "@/components/Icon";
 import { colors } from "@/constants/Colors";
-import Feather from "@react-native-vector-icons/feather";
+import "@/global.css";
 import { Tabs } from "expo-router";
-import { Pressable, StyleSheet } from "react-native";
+import { icons } from "lucide-react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const TABS: { name: string; label: string; icon: keyof typeof icons }[] = [
+  { name: "index", label: "Início", icon: "House" },
+  { name: "goals", label: "Metas", icon: "Target" },
+  { name: "add", label: "Adicionar", icon: "SquarePlus" },
+  { name: "transactions", label: "Transações", icon: "ChartSpline" },
+  { name: "profile", label: "Perfil", icon: "User" },
+];
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
@@ -16,50 +26,32 @@ export default function TabLayout() {
         tabBarStyle: {
           ...styles.tabBar,
           paddingBottom: inset,
-          display: "none",
         },
-        tabBarActiveTintColor: colors.textColor,
+        tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "#999999",
+        tabBarShowLabel: false,
         //@ts-ignore
         tabBarButton: (props) => <Pressable {...props} android_ripple={null} />,
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Início",
-          tabBarIcon: ({ color }) => (
-            <Feather name="home" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="goals"
-        options={{
-          title: "Metas",
-          tabBarIcon: ({ color }) => (
-            <Feather name="target" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="transactions"
-        options={{
-          title: "Transações",
-          tabBarIcon: ({ color }) => (
-            <Feather name="credit-card" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Perfil",
-          tabBarIcon: ({ color }) => (
-            <Feather name="user" size={24} color={color} />
-          ),
-        }}
-      />
+      {TABS?.map((tab) => (
+        <Tabs.Screen
+          key={tab.name}
+          name={tab.name}
+          options={{
+            title: tab.label,
+            tabBarIcon: ({ color, focused }) => (
+              <View
+                className={`flex p-2.5 rounded-xl ${
+                  focused ? "bg-blue-600" : "bg-transparent"
+                }`}
+              >
+                <Icon name={tab.icon} size={24} color={color} />
+              </View>
+            ),
+          }}
+        />
+      ))}
     </Tabs>
   );
 }
@@ -70,30 +62,5 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     elevation: 0,
     shadowOpacity: 0,
-  },
-  tabBarLabel: {
-    fontFamily: "DMSans_500Medium",
-    fontSize: 12,
-  },
-  iconContainer: {
-    position: "relative",
-    width: 24,
-    height: 24,
-    alignItems: "center",
-  },
-  comingSoonBadge: {
-    position: "absolute",
-    top: -20,
-    backgroundColor: colors.textColor,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 10,
-    minWidth: 80,
-    alignItems: "center",
-  },
-  comingSoonText: {
-    color: "#FFFFFF",
-    fontSize: 10,
-    fontFamily: "DMSans_700Bold",
   },
 });

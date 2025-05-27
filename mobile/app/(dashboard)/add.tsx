@@ -1,17 +1,13 @@
 import { colors } from "@/constants/Colors";
-import { useUser } from "@clerk/clerk-expo";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function ProfileScreen() {
-  const { user } = useUser();
-
-  console.log(JSON.stringify(user, null, 2));
-
+export default function AddScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Perfil</Text>
+        <Text style={styles.title}>Adicionar</Text>
+        <View className="w-10 h-10 bg-red-500 rounded-lg" />
       </View>
     </SafeAreaView>
   );
