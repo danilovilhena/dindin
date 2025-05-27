@@ -5,6 +5,7 @@ import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import { PortalHost } from "@rn-primitives/portal";
 import { Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
+import "@/global.css";
 
 export default function RootLayout() {
   return (

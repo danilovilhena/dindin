@@ -1,6 +1,5 @@
 import Icon from "@/components/Icon";
 import { colors } from "@/constants/Colors";
-import "@/global.css";
 import { Tabs } from "expo-router";
 import { icons } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
@@ -41,11 +40,7 @@ export default function TabLayout() {
           options={{
             title: tab.label,
             tabBarIcon: ({ color, focused }) => (
-              <View
-                className={`flex p-2.5 rounded-xl ${
-                  focused ? "bg-blue-600" : "bg-transparent"
-                }`}
-              >
+              <View className={`flex p-2.5 rounded-xl ${focused ? "bg-blue-600" : "bg-transparent"}`}>
                 <Icon name={tab.icon} size={24} color={color} />
               </View>
             ),

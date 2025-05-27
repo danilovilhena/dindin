@@ -17,8 +17,7 @@ export default function ProfileScreen() {
   const userName = useMemo(() => user?.fullName || `${user?.firstName} ${user?.lastName}` || "Usuário", [user?.fullName, user?.firstName, user?.lastName]);
 
   const handleUpdateData = () => {
-    // TODO: Navigate to update data screen
-    console.log("Atualizar dados");
+    router.push("/personal-data");
   };
 
   const handleCategories = () => {
