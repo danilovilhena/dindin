@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
 import Icon from "@/components/Icon";
+import { Input } from "@/components/ui/input";
 import { colors } from "@/constants/Colors";
 
 export default function PersonalDataScreen() {
@@ -16,7 +17,7 @@ export default function PersonalDataScreen() {
   const [lastName, setLastName] = useState(user?.lastName || "");
 
   // Refs for navigation between inputs
-  const lastNameRef = useRef<TextInput>(null);
+  const lastNameRef = useRef<any>(null);
 
   const handleGoBack = () => {
     router.back();
@@ -43,25 +44,36 @@ export default function PersonalDataScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        {/* Header with back button */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={handleGoBack} disabled={isLoading}>
-            <Icon name="ChevronLeft" size={24} color={colors.white} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Dados Pessoais</Text>
+    <View className="flex-1" style={{ backgroundColor: colors.dark.primary }}>
+      <SafeAreaView className="flex-1 px-5 pt-5">
+        {/* Header */}
+        <View className="flex-row items-center justify-between mb-6">
+          <View className="flex-row items-center flex-1">
+            <TouchableOpacity className="p-1 -ml-2" onPress={handleGoBack} disabled={isLoading}>
+              <Icon name="ChevronLeft" size={24} color={colors.white} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View className="flex-row items-center justify-between mb-6">
+          <View>
+            <Text className="text-2xl font-bold text-white" style={{ fontFamily: "DMSans" }}>
+              Dados Pessoais
+            </Text>
+            <Text className="text-sm font-normal mt-0.5" style={{ fontFamily: "DMSans", color: colors.dark.textSecondary }}>
+              Gerencie suas informações pessoais
+            </Text>
+          </View>
         </View>
 
         {/* Form Container */}
-        <View style={styles.formContainer}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Nome</Text>
-            <TextInput
-              style={styles.input}
+        <View className="flex-1 gap-6">
+          <View className="gap-2">
+            <Text className="text-sm font-medium ml-1" style={{ fontFamily: "DMSans", color: colors.dark.textSecondary }}>
+              Nome
+            </Text>
+            <Input
               value={firstName}
               placeholder="Digite seu nome"
-              placeholderTextColor={colors.dark.textSecondary}
               onChangeText={setFirstName}
               returnKeyType="next"
               onSubmitEditing={() => lastNameRef.current?.focus()}
@@ -70,14 +82,14 @@ export default function PersonalDataScreen() {
             />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Sobrenome</Text>
-            <TextInput
+          <View className="gap-2">
+            <Text className="text-sm font-medium ml-1" style={{ fontFamily: "DMSans", color: colors.dark.textSecondary }}>
+              Sobrenome
+            </Text>
+            <Input
               ref={lastNameRef}
-              style={styles.input}
               value={lastName}
               placeholder="Digite seu sobrenome"
-              placeholderTextColor={colors.dark.textSecondary}
               onChangeText={setLastName}
               returnKeyType="next"
               onSubmitEditing={() => handleSave()}
@@ -88,15 +100,24 @@ export default function PersonalDataScreen() {
         </View>
 
         {/* Save Button */}
-        <View style={styles.bottomSection}>
-          <TouchableOpacity style={[styles.saveButton, isLoading && styles.saveButtonDisabled]} onPress={handleSave} disabled={isLoading}>
+        <View className="pt-5">
+          <TouchableOpacity
+            className={`py-4 px-8 rounded-xl w-full items-center ${isLoading ? "opacity-60" : ""}`}
+            style={{ backgroundColor: colors.primary }}
+            onPress={handleSave}
+            disabled={isLoading}
+          >
             {isLoading ? (
-              <View style={styles.loadingContainer}>
-                <ActivityIndicator size="small" color={colors.dark.primary} />
-                <Text style={styles.saveButtonText}>Salvando...</Text>
+              <View className="flex-row items-center gap-2">
+                <ActivityIndicator size="small" color={colors.white} />
+                <Text className="text-white text-base font-semibold" style={{ fontFamily: "DMSans" }}>
+                  Salvando...
+                </Text>
               </View>
             ) : (
-              <Text style={styles.saveButtonText}>Salvar Alterações</Text>
+              <Text className="text-white text-base font-semibold" style={{ fontFamily: "DMSans" }}>
+                Salvar Alterações
+              </Text>
             )}
           </TouchableOpacity>
         </View>
@@ -104,100 +125,3 @@ export default function PersonalDataScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.dark.primary,
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 40,
-    position: "relative",
-  },
-  backButton: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    padding: 4,
-    zIndex: 1,
-  },
-  headerText: {
-    fontFamily: "DMSans",
-    fontWeight: "700",
-    fontSize: 24,
-    color: colors.white,
-    textAlign: "center",
-    flex: 1,
-  },
-  formContainer: {
-    flex: 1,
-    gap: 24,
-  },
-  inputGroup: {
-    gap: 8,
-  },
-  inputLabel: {
-    fontSize: 14,
-    fontFamily: "DMSans",
-    fontWeight: "500",
-    color: colors.dark.textSecondary,
-    marginLeft: 4,
-  },
-  input: {
-    backgroundColor: colors.dark.secondary,
-    borderRadius: 16,
-    paddingVertical: 18,
-    paddingHorizontal: 20,
-    fontSize: 16,
-    fontFamily: "DMSans",
-    fontWeight: "400",
-    color: colors.white,
-    borderWidth: 1,
-    borderColor: colors.dark.border,
-  },
-  disabledInput: {
-    backgroundColor: colors.dark.tertiary,
-    color: colors.dark.textSecondary,
-  },
-  helperText: {
-    fontSize: 12,
-    fontFamily: "DMSans",
-    fontWeight: "400",
-    color: colors.dark.textTertiary,
-    marginLeft: 4,
-    marginTop: 4,
-  },
-  bottomSection: {
-    paddingTop: 20,
-  },
-  saveButton: {
-    backgroundColor: colors.blue,
-    paddingVertical: 18,
-    paddingHorizontal: 32,
-    borderRadius: 30,
-    width: "100%",
-    alignItems: "center",
-  },
-  saveButtonDisabled: {
-    opacity: 0.6,
-  },
-  saveButtonText: {
-    color: colors.white,
-    fontSize: 16,
-    fontFamily: "DMSans",
-    fontWeight: "600",
-  },
-  loadingContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-});

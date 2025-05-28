@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { icons } from "lucide-react-native";
 import { cn } from "@/lib/utils";
 import { useRouter } from "expo-router";
+import { colors } from "@/constants/Colors";
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -21,8 +22,7 @@ export default function ProfileScreen() {
   };
 
   const handleCategories = () => {
-    // TODO: Navigate to categories screen
-    console.log("Categorias");
+    router.push("/categories");
   };
 
   const handlePaymentMethods = () => {
@@ -64,7 +64,7 @@ export default function ProfileScreen() {
           <TouchableOpacity key={index} onPress={button.onPress} className={cn("py-4 flex-row items-center justify-between")}>
             <View className="flex-row items-center">
               <View className="bg-neutral-900 p-3 rounded-xl mr-4">
-                <Icon name={button.icon as any} size={20} color="#2B7FFF" />
+                <Icon name={button.icon as any} size={20} color={colors.primary} />
               </View>
               <Text className="text-white text-lg font-semibold">{button.label}</Text>
             </View>

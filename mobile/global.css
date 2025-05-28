@@ -47,3 +47,7 @@
         --ring: 240 4.9% 83.9%;
       }
   }
+
+* {
+  font-family: "DM Sans", sans-serif !important;
+}

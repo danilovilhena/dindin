@@ -1,17 +1,19 @@
+import { StoreStateHandler } from "@/components/store-state-handler";
 import { colors } from "@/constants/Colors";
+import "@/global.css";
 import { ClerkProvider } from "@clerk/clerk-expo";
 import { resourceCache } from "@clerk/clerk-expo/resource-cache";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import { PortalHost } from "@rn-primitives/portal";
 import { Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import "@/global.css";
 
 export default function RootLayout() {
   return (
     <ClerkProvider publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache} __experimental_resourceCache={resourceCache}>
       <View style={styles.container}>
         <Stack screenOptions={{ headerShown: false }} />
+        <StoreStateHandler />
         <PortalHost />
       </View>
     </ClerkProvider>

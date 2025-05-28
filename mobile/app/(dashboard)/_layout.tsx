@@ -40,7 +40,7 @@ export default function TabLayout() {
           options={{
             title: tab.label,
             tabBarIcon: ({ color, focused }) => (
-              <View className={`flex p-2.5 rounded-xl ${focused ? "bg-blue-600" : "bg-transparent"}`}>
+              <View className={`flex p-2.5 rounded-xl ${focused ? "bg-blue-500" : "bg-transparent"}`}>
                 <Icon name={tab.icon} size={24} color={color} />
               </View>
             ),
