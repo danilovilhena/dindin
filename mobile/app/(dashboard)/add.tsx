@@ -192,7 +192,7 @@ export default function AddScreen() {
                   onPress={() => handleDateChange("custom")}
                 >
                   <Text className={`text-center font-medium ${dateMode === "custom" ? "text-white" : "text-neutral-400"}`}>
-                    {dateMode === "custom" ? selectedDate.toLocaleDateString("pt-BR") : "Outro"}
+                    {dateMode === "custom" ? selectedDate.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" }) : "Outro"}
                   </Text>
                 </TouchableOpacity>
               </View>
