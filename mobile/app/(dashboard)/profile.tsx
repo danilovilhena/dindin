@@ -26,8 +26,7 @@ export default function ProfileScreen() {
   };
 
   const handlePaymentMethods = () => {
-    // TODO: Navigate to payment methods screen
-    console.log("Formas de Pagamento");
+    router.push("/payment-methods");
   };
 
   const handleSettings = () => {
@@ -48,7 +47,7 @@ export default function ProfileScreen() {
     { label: "Dados Pessoais", icon: "User", onPress: handleUpdateData },
     { label: "Categorias", icon: "Tags", onPress: handleCategories },
     { label: "Formas de Pagamento", icon: "Wallet", onPress: handlePaymentMethods },
-    { label: "Configurações", icon: "Settings", onPress: handleSettings },
+    // { label: "Configurações", icon: "Settings", onPress: handleSettings },
   ];
 
   return (
