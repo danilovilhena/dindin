@@ -61,7 +61,8 @@
           "photosPermission": "A aplicação acessa suas fotos para permitir que você selecione uma imagem para seu perfil.",
           "cameraPermission": "A aplicação acessa sua câmera para permitir que você tire uma foto para seu perfil."
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "scheme": "dindin",
     "slug": "Dindin",
