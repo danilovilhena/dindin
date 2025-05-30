@@ -54,6 +54,12 @@ export default function CategoriesScreen() {
             <Text className="text-lg font-semibold text-white mb-0.5" style={{ fontFamily: "DMSans" }}>
               {item.name}
             </Text>
+            <View className="flex-row items-center gap-1">
+              <Icon name={item.type === "gasto" ? "Minus" : "Plus"} size={16} color={item.type === "gasto" ? "#f87171" : "#4ade80"} />
+              <Text className={`text-sm font-normal ${item.type === "gasto" ? "text-red-400" : "text-green-400"}`} style={{ fontFamily: "DMSans" }}>
+                {item.type === "gasto" ? "Gasto" : "Receita"}
+              </Text>
+            </View>
           </View>
         </View>
         <View className="flex-row gap-0">

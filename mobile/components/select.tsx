@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
 export const Select = ({
+  className,
   value,
   onValueChange,
   options,
@@ -11,6 +12,7 @@ export const Select = ({
   renderOption,
   maxHeight,
 }: {
+  className?: string;
   value: string | null;
   onValueChange: (value: string) => void;
   options: Array<{ id: string; name: string; icon?: string; color?: string }>;
@@ -26,7 +28,7 @@ export const Select = ({
   return (
     <View className="relative">
       <TouchableOpacity
-        className="flex-row items-center justify-between p-4 bg-neutral-800 rounded-xl border border-neutral-700"
+        className={`flex-row items-center justify-between p-4 bg-neutral-800 rounded-xl border border-neutral-700 ${className}`}
         onPress={() => setIsOpen(!isOpen)}
       >
         <View className="flex-row items-center flex-1">

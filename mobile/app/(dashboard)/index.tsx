@@ -7,14 +7,7 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useCallback, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Transaction {
@@ -95,10 +88,7 @@ const mockTransactions: Transaction[] = [
 export default function HomeScreen() {
   const router = useRouter();
   const { signOut, isSignedIn, isLoaded } = useAuth();
-  const currentBalance = mockTransactions.reduce(
-    (acc, curr) => acc + curr.amount,
-    0
-  );
+  const currentBalance = mockTransactions.reduce((acc, curr) => acc + curr.amount, 0);
 
   // Redirect to main page if not signed in
   useEffect(() => {
@@ -119,36 +109,17 @@ export default function HomeScreen() {
   };
 
   const getCurrentMonth = () => {
-    const monthNames = [
-      "Janeiro",
-      "Fevereiro",
-      "Março",
-      "Abril",
-      "Maio",
-      "Junho",
-      "Julho",
-      "Agosto",
-      "Setembro",
-      "Outubro",
-      "Novembro",
-      "Dezembro",
-    ];
+    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
     const now = new Date();
     return `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
   };
 
-  const renderTransaction = useCallback(
-    ({ item }: { item: Transaction }) => <ExpenseCard transaction={item} />,
-    []
-  );
+  const renderTransaction = useCallback(({ item }: { item: Transaction }) => <ExpenseCard transaction={item} />, []);
 
   const keyExtractor = useCallback((item: Transaction) => item.id, []);
 
   // Performance optimization: Calculate item layout if ExpenseCard has consistent height
-  const getItemLayout = (
-    data: ArrayLike<Transaction> | null | undefined,
-    index: number
-  ) => ({
+  const getItemLayout = (data: ArrayLike<Transaction> | null | undefined, index: number) => ({
     length: 80, // 16px top padding + 16px bottom padding + 12px marginBottom + ~36px content height
     offset: 80 * index,
     index,
@@ -174,16 +145,10 @@ export default function HomeScreen() {
         <View style={styles.balanceCard}>
           <View style={styles.balanceTop}>
             <Text style={styles.totalLabel}>TOTAL GASTO</Text>
-            <Ionicons
-              name="chevron-forward"
-              size={20}
-              color={colors.dark.textSecondary}
-            />
+            <Ionicons name="chevron-forward" size={20} color={colors.dark.textSecondary} />
           </View>
           <View style={styles.balanceBottom}>
-            <Text style={styles.balanceAmount}>
-              {formatCurrency(currentBalance)}
-            </Text>
+            <Text style={styles.balanceAmount}>{formatCurrency(currentBalance)}</Text>
             <View style={styles.monthTag}>
               <Text style={styles.monthTagText}>{getCurrentMonth()}</Text>
             </View>
@@ -214,10 +179,6 @@ export default function HomeScreen() {
           />
         </View>
       </View>
-
-      <Pressable style={styles.fab}>
-        <Feather name="plus" size={28} color={colors.dark.primary} />
-      </Pressable>
 
       <SessionStateHandler />
     </SafeAreaView>
@@ -337,26 +298,5 @@ const styles = StyleSheet.create({
   },
   transactionsContainer: {
     flex: 1,
-  },
-
-  fab: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
-    width: 52,
-    height: 52,
-    borderRadius: 30,
-    backgroundColor: colors.yellow,
-    color: colors.dark.primary,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 15,
-    elevation: 12,
   },
 });

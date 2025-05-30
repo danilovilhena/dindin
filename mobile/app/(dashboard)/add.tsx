@@ -137,6 +137,7 @@ export default function AddScreen() {
             <View className="mb-6">
               <Text className="text-sm font-medium text-neutral-400 mb-3 ml-1">Forma de Pagamento</Text>
               <Select
+                className="min-h-[58px]"
                 value={selectedPaymentMethod}
                 onValueChange={setSelectedPaymentMethod}
                 options={enabledPaymentMethods}
@@ -154,6 +155,7 @@ export default function AddScreen() {
                 </TouchableOpacity>
               </View>
               <Select
+                className="min-h-[58px]"
                 value={selectedCategory}
                 onValueChange={setSelectedCategory}
                 options={expenseCategories}
